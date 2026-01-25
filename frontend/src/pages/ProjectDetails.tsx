@@ -78,7 +78,7 @@ export default function ProjectDetail() {
   const handleStatusChange = async (taskId: string, newStatus: TaskStatus) => {
     try {
       const response = await api.patch<Task>(`/tasks/${taskId}`, { status: newStatus });
-      setTasks(tasks.map(task => task.id === taskId ? response.data : task));
+      setTasks(tasks.map(task => task._id === taskId ? response.data : task));
       toast.success('Task status updated!');
     } catch (error: any) {
       toast.error(error.response?.data?.detail || 'Failed to update task');
@@ -204,8 +204,8 @@ export default function ProjectDetail() {
                   <div className="space-y-3">
                     {statusTasks.map((task) => (
                       <Card
-                        key={task.id}
-                        data-testid={`task-card-${task.id}`}
+                        key={task._id}
+                        data-testid={`task-card-${task._id}`}
                         className="
                           bg-card/80
                           backdrop-blur
@@ -218,7 +218,7 @@ export default function ProjectDetail() {
                       >
                         <CardContent className="p-4 space-y-3">
                           <div>
-                            <h3 className="font-medium" data-testid={`task-title-${task.id}`}>{task.title}</h3>
+                            <h3 className="font-medium" data-testid={`task-title-${task._id}`}>{task.title}</h3>
                             {task.description && (
                               <p className="text-sm text-muted-foreground mt-1">{task.description}</p>
                             )}
@@ -229,9 +229,9 @@ export default function ProjectDetail() {
                             </p>
                             <Select
                               value={task.status}
-                              onValueChange={(value: TaskStatus) => handleStatusChange(task.id, value)}
+                              onValueChange={(value: TaskStatus) => handleStatusChange(task._id, value)}
                             >
-                              <SelectTrigger className="w-32 h-8 text-xs" data-testid={`task-status-select-${task.id}`}>
+                              <SelectTrigger className="w-32 h-8 text-xs" data-testid={`task-status-select-${task._id}`}>
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent>
