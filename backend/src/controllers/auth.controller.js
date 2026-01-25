@@ -1,8 +1,5 @@
 import jwt from "jsonwebtoken";
-import { OAuth2Client } from "google-auth-library";
 import User from "../models/user.model.js";
-
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const generateToken = (user) => {
   return jwt.sign(
@@ -67,48 +64,6 @@ export const login = async (req, res, next) => {
 
     res.json({
       token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-//  Google Login
-export const googleLogin = async (req, res, next) => {
-  try {
-    const { token } = req.body;
-
-    if (!token) {
-      return res.status(400).json({ message: "Token required" });
-    }
-
-    const ticket = await googleClient.verifyIdToken({
-      idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID,
-    });
-
-    const { email, name } = ticket.getPayload();
-
-    let user = await User.findOne({ email });
-
-    if (!user) {
-      user = await User.create({
-        name,
-        email,
-        provider: "google",
-        password: null,
-      });
-    }
-
-    const appToken = generateToken(user);
-
-    res.json({
-      token: appToken,
       user: {
         id: user._id,
         name: user.name,
