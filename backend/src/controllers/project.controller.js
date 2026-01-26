@@ -51,6 +51,33 @@ export const getProjectById = async (req, res, next) => {
   }
 };
 
+/* Update project */
+export const updateProject = async (req, res, next) => {
+  try {
+    const { name, description } = req.body;
+
+    if (!name) {
+      res.status(400);
+      throw new Error("Project name is required");
+    }
+
+    const project = await projectRepo.updateProjectByIdAndUser(
+      req.params.projectId,
+      req.user._id,
+      { name, description }
+    );
+
+    if (!project) {
+      res.status(404);
+      throw new Error("Project not found");
+    }
+
+    res.json(project);
+  } catch (error) {
+    next(error);
+  }
+};
+
 /* Delete project */
 export const deleteProject = async (req, res, next) => {
   try {

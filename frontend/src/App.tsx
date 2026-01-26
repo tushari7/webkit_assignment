@@ -4,10 +4,14 @@ import Register from "./pages/Register"
 import ProtectedRoutes from "./routes/ProtectedRoutes"
 import Projects from "./pages/Projects"
 import ProjectDetail from "./pages/ProjectDetails"
+import { Toaster } from "sonner"
 
 
 function App() {
   return (
+    <>
+      <Toaster position="top-right" richColors />
+
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -18,6 +22,7 @@ function App() {
           <Route path="/projects/:projectId" element={<ProjectDetail />} />
         </Route>
       </Routes>
+    </>
   )
 }
 

@@ -12,6 +12,14 @@ export const getProjectByIdAndUser = (projectId, userId) => {
   return Project.findOne({ _id: projectId, user: userId });
 };
 
+export const updateProjectByIdAndUser = (projectId, userId, data) => {
+  return Project.findOneAndUpdate(
+    { _id: projectId, user: userId },
+    data,
+    { new: true }
+  );
+};
+
 export const deleteProjectByIdAndUser = (projectId, userId) => {
   return Project.findOneAndDelete({ _id: projectId, user: userId });
 };
